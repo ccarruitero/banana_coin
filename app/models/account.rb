@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   validates :address, uniqueness: true
+  has_many :transactions
 
   def to_param
     address

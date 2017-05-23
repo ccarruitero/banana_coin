@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
 
   private
     def set_account
-      @account = Account.find_or_create_by(address: params[:id])
+      @account = Account.includes(:transactions).find_or_create_by(address: params[:id])
     end
 
     def account_params

@@ -9,3 +9,23 @@
   <strong>Balance:</strong>
   <%= @account.balance %>
 </p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Instruction</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @account.transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.description %></td>
+        <td><%= transaction.amount %></td>
+        <td><%= transaction.instruction %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

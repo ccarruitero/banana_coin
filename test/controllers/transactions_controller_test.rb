@@ -2,11 +2,12 @@ require 'test_helper'
 
 class TransactionsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @transaction = transactions(:one)
+    @account = Account.create(address: Digest::SHA256.hexdigest('lalala'))
+    @transaction = Transaction.create(account: @account)
   end
 
   test "should get index" do
-    get transactions_url
+    get transactions_ura
     assert_response :success
   end
 
