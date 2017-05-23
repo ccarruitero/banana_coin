@@ -1,0 +1,20 @@
+<%= form_with(url: account_transactions_path(@account), local: true) do |form| %>
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :transaction_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :amount %>
+    <%= form.number_field :amount, id: :transaction_amount %>
+  </div>
+
+  <div class="field">
+    <%= form.label :instruction %>
+    <%= form.collection_select :instruction, Account::TRANSACTION_TYPES_SELECT, :label, :value %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
