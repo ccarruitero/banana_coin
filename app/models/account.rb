@@ -20,7 +20,20 @@ class Account < ApplicationRecord
     Digest::SHA256.hexdigest(string)
   end
 
+  def verify(transaction_params)
+    verify_password(transaction_params[:password]) &&
+    verify_instruction(transaction_params[:instruction], transaction_params[:amount])
+  end
+
   def verify_password(password)
     address == sha_address(password)
+  end
+
+  def verify_instruction(instruction, amount)
+    if instruction == 'retiro'
+      (balance - amount.to_i) >= 0
+    elsif instruction == 'deposito'
+      true
+    end
   end
 end

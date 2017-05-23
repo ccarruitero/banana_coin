@@ -5,7 +5,7 @@ class TransactionsController < ApplicationController
     @transaction = @account.transactions.new(transaction_params.except(:password))
 
     respond_to do |format|
-      if @account.verify_password(transaction_params[:password]) && @transaction.save
+      if @account.verify(transaction_params) && @transaction.save
         format.html { redirect_to @account, notice: 'Transaction was successfully created.' }
       else
         format.html { redirect_to @account, notice: 'Transaction failed' }
