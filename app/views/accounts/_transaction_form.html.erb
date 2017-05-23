@@ -1,5 +1,8 @@
 <%= form_with(url: account_transactions_path(@account), model: Transaction.new, local: true) do |form| %>
   <div class="field">
+    <%= form.label :password %>
+    <%= form.text_area :password, id: :transaction_password %>
+  <div class="field">
     <%= form.label :description %>
     <%= form.text_area :description, id: :transaction_description %>
   </div>
