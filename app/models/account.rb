@@ -19,4 +19,8 @@ class Account < ApplicationRecord
   def sha_address(string)
     Digest::SHA256.hexdigest(string)
   end
+
+  def verify_password(password)
+    address == sha_address(password)
+  end
 end

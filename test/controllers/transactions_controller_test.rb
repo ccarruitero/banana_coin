@@ -3,47 +3,33 @@ require 'test_helper'
 class TransactionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @account = Account.create(address: Digest::SHA256.hexdigest('lalala'))
-    @transaction = Transaction.create(account: @account)
-  end
-
-  test "should get index" do
-    get transactions_ura
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_transaction_url
-    assert_response :success
   end
 
   test "should create transaction" do
     assert_difference('Transaction.count') do
-      post transactions_url, params: { transaction: { account_id: @transaction.account_id, amount: @transaction.amount, description: @transaction.description, instruction: @transaction.instruction } }
+      post account_transactions_url(@account),
+        params: {
+          transaction: { amount: 200,
+                         password: 'lalala',
+                         description: 'some text',
+                         instruction: 'deposito' } }
+
     end
 
-    assert_redirected_to transaction_url(Transaction.last)
+    assert_redirected_to account_url(@account)
   end
 
-  test "should show transaction" do
-    get transaction_url(@transaction)
-    assert_response :success
-  end
+  test "without correct password shouldnt create transaction" do
+    assert_no_difference('Transaction.count') do
+      post account_transactions_url(@account),
+        params: {
+          transaction: { amount: 200,
+                         password: 'hiddenpass',
+                         description: 'some text',
+                         instruction: 'deposito' } }
 
-  test "should get edit" do
-    get edit_transaction_url(@transaction)
-    assert_response :success
-  end
-
-  test "should update transaction" do
-    patch transaction_url(@transaction), params: { transaction: { account_id: @transaction.account_id, amount: @transaction.amount, description: @transaction.description, instruction: @transaction.instruction } }
-    assert_redirected_to transaction_url(@transaction)
-  end
-
-  test "should destroy transaction" do
-    assert_difference('Transaction.count', -1) do
-      delete transaction_url(@transaction)
     end
 
-    assert_redirected_to transactions_url
+    assert_redirected_to account_url(@account)
   end
 end

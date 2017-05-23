@@ -2,13 +2,13 @@ class TransactionsController < ApplicationController
   before_action :set_account
 
   def create
-    @transaction = @account.transactions.new(transaction_params)
+    @transaction = @account.transactions.new(transaction_params.except(:password))
 
     respond_to do |format|
-      if @transaction.save
+      if @account.verify_password(transaction_params[:password]) && @transaction.save
         format.html { redirect_to @account, notice: 'Transaction was successfully created.' }
       else
-        format.html { render :new }
+        format.html { redirect_to @account, notice: 'Transaction failed' }
       end
     end
   end
@@ -25,6 +25,6 @@ class TransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transaction_params
-      params.require(:transaction).permit(:account_id, :description, :amount, :instruction)
+      params.require(:transaction).permit(:account_id, :description, :amount, :instruction, :password)
     end
 end
